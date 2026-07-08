@@ -618,10 +618,10 @@ fix: correct temperature excursion logic
 
 ### GitHub
 
-- [ ] Repository cloned successfully
-- [ ] Correct branch selected
-- [ ] Git identity configured
-- [ ] Push access tested
+- [x] Repository cloned successfully
+- [x] Correct branch selected
+- [x] Git identity configured
+- [x] Push access tested
 
 ### Python
 
