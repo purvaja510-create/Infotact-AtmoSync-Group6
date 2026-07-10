@@ -1,3 +1,4 @@
+# Containers Numbers
 Containers=[
 "A101",
 "A102",
@@ -7,7 +8,7 @@ Containers=[
 "A106"
 ]
 
-
+# Commodities with there details
 Commodities= {
     "Avocado": {
         "temp_range": (4,8),
@@ -52,5 +53,10 @@ Commodities= {
         "longitude_range":(78.30, 78.60)
     }
 }    
+
+# Adding some missing values
+temperature_missing_probability=0.6
+humidity_missing_probability=0.4
+temperature_spike_probablity=0.3
 
 interval=5
