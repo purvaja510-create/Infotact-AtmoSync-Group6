@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: stg_sensor_readings
+    description: "Clean staging model for IoT sensor readings."
+
+    columns:
+      - name: TIMESTAMP
+        description: "Timestamp when the sensor reading was recorded."
+        tests:
+          - not_null
+
+      - name: CONTAINER_ID
+        description: "Unique container identifier."
+        tests:
+          - not_null
+
+      - name: COMMODITY
+        description: "Commodity being transported."
+
+      - name: SOURCE
+        description: "Origin city."
+
+      - name: DESTINATION
+        description: "Destination city."
+
+      - name: TEMPERATURE
+        description: "Temperature reading."
+
+      - name: HUMIDITY
+        description: "Humidity reading."
+
+      - name: VIBRATION
+        description: "Vibration level."
+
+      - name: BATTERY_LEVEL
+        description: "Battery percentage."
+
+      - name: SPEED
+        description: "Vehicle speed."
