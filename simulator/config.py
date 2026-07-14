@@ -45,7 +45,7 @@ Commodities= {
         "latitude_range":(17.30,17.50),
         "longitude_range":(78.30, 78.60)
     },
-    "Vegitables":{
+    "Vegetables":{
         "temp_range":(10,16),   
         "humidity_range":(50,60),
         "vibration_range":(0.10,1.00),
@@ -55,8 +55,8 @@ Commodities= {
 }    
 
 # Adding some missing values
-temperature_missing_probability=0.6
-humidity_missing_probability=0.4
-temperature_spike_probablity=0.3
+temperature_missing_probability=0.5
+humidity_missing_probability=0.3
+temperature_spike_probability=0.2
 
 interval=5
