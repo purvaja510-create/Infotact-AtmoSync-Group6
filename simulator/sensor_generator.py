@@ -3,7 +3,7 @@ import json
 import time
 from datetime import datetime
 
-from config import *
+from simulator.config import *
 
 def maybe_missing(value,probability):
     if random.random()<probability:
@@ -15,7 +15,7 @@ def maybe_temperature_spike(temperature,probabitiy):
         return round(random.uniform(20,40),2)
     return temperature
 
-def genarate_sensor_data():
+def generate_sensor_data():
     commodity= random.choice(list(Commodities.keys()))
 
     temperature=round(random.uniform(*Commodities[commodity]["temp_range"]),2)
@@ -58,7 +58,7 @@ def main():
     print("AtmoSync IoT Simulator Started...\n")
 
     while True:
-        sensor= genarate_sensor_data()
+        sensor= generate_sensor_data()
 
         print(json.dumps(sensor,indent=4))
         print("-"*50)
