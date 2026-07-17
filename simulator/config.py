@@ -59,4 +59,4 @@ temperature_missing_probability=0.5
 humidity_missing_probability=0.3
 temperature_spike_probability=0.2
 
-interval=5
+interval=0.5

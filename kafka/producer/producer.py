@@ -4,12 +4,15 @@ import json
 import time
 from kafka import KafkaProducer
 
+
+
 project_root = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "..")
 )
 sys.path.insert(0, project_root)
 
 from simulator.sensor_generator import generate_sensor_data
+from simulator.config import interval
 from kafka_config import BOOTSTRAP_SERVER, TOPIC
 
 producer = KafkaProducer(
@@ -25,4 +28,4 @@ while True:
 
     print("Sent:", sensor)
 
-    time.sleep(5)
+    time.sleep(interval)

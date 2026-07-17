@@ -50,7 +50,7 @@ def generate_sensor_data():
                 *Commodities[commodity]["longitude_range"]),6),
         
             
-        "timestamp": datetime.now().strftime("%d/%m%Y/,%H:%M:%S")
+        "timestamp": datetime.now().strftime("%d/%m/%Y/,%H:%M:%S")
     }
     return sensor
 
@@ -59,7 +59,7 @@ def main():
 
     while True:
         sensor= generate_sensor_data()
-
+        
         print(json.dumps(sensor,indent=4))
         print("-"*50)
         time.sleep(interval)
