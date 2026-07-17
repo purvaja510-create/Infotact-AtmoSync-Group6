@@ -1,6 +1,9 @@
 {{ config(materialized='table') }}
 
 SELECT DISTINCT
+
+    CONCAT(source, '_', destination) AS route_key,
+
     source,
     destination
 

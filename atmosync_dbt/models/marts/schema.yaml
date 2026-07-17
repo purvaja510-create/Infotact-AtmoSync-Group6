@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: dim_container
+    description: "Dimension table containing unique containers and their associated commodity and route."
+
+    columns:
+      - name: container_id
+        description: "Unique identifier for each container."
+        tests:
+          - unique
+          - not_null
+
+      - name: commodity
+        description: "Commodity transported by the container."
+
+      - name: source
+        description: "Origin location."
+
+      - name: destination
+        description: "Destination location."
+
+  - name: dim_route
+    description: "Dimension table containing unique transportation routes."
+
+    columns:
+      - name: route_key
+        description: "Unique identifier for the route."
+        tests:
+          - unique
+          - not_null
+
+      - name: source
+        description: "Origin location."
+
+      - name: destination
+        description: "Destination location."
+
+  - name: fact_sensor_readings
+    description: "Fact table containing enriched IoT sensor readings."
+
+    columns:
+      - name: timestamp
+        tests:
+          - not_null
+
+      - name: container_id
+        tests:
+          - not_null
+
+      - name: commodity
+
+      - name: category
+
+      - name: price_per_kg
+
+      - name: route_key
+
+      - name: temperature
+
+      - name: humidity
+
+      - name: vibration
+
+      - name: battery_level
+
+      - name: speed
