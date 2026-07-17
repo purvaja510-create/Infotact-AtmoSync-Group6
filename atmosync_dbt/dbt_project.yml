@@ -2,6 +2,10 @@
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
 
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+
 name: 'atmosync_dbt'
 version: '1.0.0'
 
@@ -23,5 +27,16 @@ clean-targets:
 # Configure models
 models:
   atmosync_dbt:
+
     staging:
+      +schema: STAGING
       +materialized: view
+
+    marts:
+      +schema: MARTS
+      +materialized: table
+
+# Configure seeds
+seeds:
+  atmosync_dbt:
+    +schema: RAW
