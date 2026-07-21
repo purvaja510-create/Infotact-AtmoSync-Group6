@@ -33,6 +33,10 @@ def generate_sensor_data():
 
         "commodity":commodity,
 
+        "Origin":random.choice(Origin),
+
+        "Destination":random.choice(Destination),
+
         "Temperature": temperature,
 
         "Humidity": humidity,

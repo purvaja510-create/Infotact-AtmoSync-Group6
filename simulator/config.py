@@ -7,6 +7,9 @@ Containers=[
 "A105",
 "A106"
 ]
+# Origin and Destination of the containers
+Origin=["Hyderabad","Bengalure","Chennai","Mumbai","Kashi","Delhi","Pune","Lucknow","Jaipur"]
+Destination=["Goa","Vizag","Srinagar","Bhubaneshwar","Kolkata","Amritsar","Chandigarh","Dehradun","Shimla"]
 
 # Commodities with there details
 Commodities= {
@@ -59,4 +62,4 @@ temperature_missing_probability=0.5
 humidity_missing_probability=0.3
 temperature_spike_probability=0.2
 
-interval=0.5
+interval=0.2

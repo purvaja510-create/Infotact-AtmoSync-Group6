@@ -4,8 +4,6 @@ import json
 import time
 from kafka import KafkaProducer
 
-
-
 project_root = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "..")
 )
@@ -26,6 +24,7 @@ while True:
     producer.send(TOPIC, value=sensor)
     producer.flush()
 
-    print("Sent:", sensor)
+    print("Sent Sensor Data:", sensor)
+    print("="*50)
 
     time.sleep(interval)
