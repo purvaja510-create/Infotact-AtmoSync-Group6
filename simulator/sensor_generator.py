@@ -23,7 +23,6 @@ def generate_sensor_data():
     commodity = random.choice(list(Commodities.keys()))
     
     
-
     temperature = round(
         random.uniform(*Commodities[commodity]["Temp_range"]), 2
     )
@@ -55,15 +54,24 @@ def generate_sensor_data():
         1
     )
 
+    route = random.choice(Route)
+
     sensor = {
 
         "Container_id": random.choice(Containers),
 
         "Commodity": commodity,
 
-        "Origin": random.choice(Origin),
 
-        "Destination": random.choice(Destination),
+        "Origin":  route["origin"],
+
+        "Destination": route["destination"],
+
+        "Route_id": route["route_id"],
+
+        "Transport_mode": route["transport_mode"],
+
+        "Container_status": random.choice(container_status),
 
         "Temperature": temperature,
 
@@ -82,14 +90,14 @@ def generate_sensor_data():
 
         "Latitude": round(
             random.uniform(
-                *Commodities[commodity]["Latitude_range"]
+                *route["Latitude_range"]
             ),
             6
         ),
 
         "Longitude": round(
             random.uniform(
-                *Commodities[commodity]["Longitude_range"]
+                *route["Longitude_range"]
             ),
             6
         ),
