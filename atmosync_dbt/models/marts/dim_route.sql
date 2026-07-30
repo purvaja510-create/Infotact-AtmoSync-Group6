@@ -2,7 +2,7 @@
 
 SELECT DISTINCT
 
-    CONCAT(source, '_', destination) AS route_key,
+    CONCAT(source, ' -> ', destination) AS route_key,
 
     source,
     destination
@@ -11,4 +11,4 @@ FROM {{ ref('stg_sensor_readings') }}
 
 ORDER BY
     source,
-    destination
+    destination 

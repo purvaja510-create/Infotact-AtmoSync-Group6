@@ -5,6 +5,23 @@ from datetime import datetime
 
 from simulator.config import *
 
+# ---------------------------------------------------------
+# Reading ID Counter
+# ---------------------------------------------------------
+
+reading_counter = 1
+
+
+def get_reading_id():
+    global reading_counter
+    reading_id = f"R{reading_counter:06d}"
+    reading_counter += 1
+    return reading_id
+
+
+# ---------------------------------------------------------
+# Missing Value Simulation
+# ---------------------------------------------------------
 
 def maybe_missing(value, probability):
     if random.random() < probability:
@@ -12,24 +29,37 @@ def maybe_missing(value, probability):
     return value
 
 
+# ---------------------------------------------------------
+# Temperature Spike Simulation
+# ---------------------------------------------------------
+
 def maybe_temperature_spike(temperature, probability):
     if random.random() < probability:
-        return round(random.uniform(20, 40), 2)
+        return round(temperature + random.uniform(3, 8), 2)
     return temperature
 
+
+# ---------------------------------------------------------
+# Generate Sensor Data
+# ---------------------------------------------------------
 
 def generate_sensor_data():
 
     commodity = random.choice(list(Commodities.keys()))
-    
-    
+
+    commodity_details = Commodities.get(commodity, {})
+
+    category = commodity_details.get("Category", "Unknown")
+
+    origin, destination = random.choice(Routes)
 
     temperature = round(
-        random.uniform(*Commodities[commodity]["Temp_range"]), 2
+        random.uniform(*commodity_details["Temp_range"]),
+        2
     )
 
     humidity = random.randint(
-        *Commodities[commodity]["Humidity_range"]
+        *commodity_details["Humidity_range"]
     )
 
     temperature = maybe_temperature_spike(
@@ -47,7 +77,6 @@ def generate_sensor_data():
         humidity_missing_probability
     )
 
-    # New fields
     battery_level = random.randint(*battery_range)
 
     speed = round(
@@ -55,44 +84,54 @@ def generate_sensor_data():
         1
     )
 
+    vibration = round(
+        random.uniform(
+            *commodity_details["Vibration_range"]
+        ),
+        2
+    )
+
+    latitude = round(
+        random.uniform(
+            *commodity_details["Latitude_range"]
+        ),
+        6
+    )
+
+    longitude = round(
+        random.uniform(
+            *commodity_details["Longitude_range"]
+        ),
+        6
+    )
+
     sensor = {
+
+        "Reading_ID": get_reading_id(),
 
         "Container_id": random.choice(Containers),
 
         "Commodity": commodity,
 
-        "Origin": random.choice(Origin),
+        "Category": category,
 
-        "Destination": random.choice(Destination),
+        "Origin": origin,
+
+        "Destination": destination,
 
         "Temperature": temperature,
 
         "Humidity": humidity,
 
-        "Vibration": round(
-            random.uniform(
-                *Commodities[commodity]["Vibration_range"]
-            ),
-            2
-        ),
+        "Vibration": vibration,
 
         "Battery_Level": battery_level,
 
         "Speed": speed,
 
-        "Latitude": round(
-            random.uniform(
-                *Commodities[commodity]["Latitude_range"]
-            ),
-            6
-        ),
+        "Latitude": latitude,
 
-        "Longitude": round(
-            random.uniform(
-                *Commodities[commodity]["Longitude_range"]
-            ),
-            6
-        ),
+        "Longitude": longitude,
 
         "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -101,14 +140,23 @@ def generate_sensor_data():
     return sensor
 
 
+# ---------------------------------------------------------
+# Main
+# ---------------------------------------------------------
+
 def main():
-    print("AtmoSync IoT Simulator Started...\n")
+
+    print("=" * 50)
+    print("      AtmoSync IoT Simulator Started")
+    print("=" * 50)
 
     while True:
+
         sensor = generate_sensor_data()
 
         print(json.dumps(sensor, indent=4))
-        print("=" * 50)
+
+        print("=" * 60)
 
         time.sleep(interval)
 
