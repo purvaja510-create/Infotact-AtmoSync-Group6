@@ -1,21 +1,30 @@
 SELECT
 
+    s.reading_id,
 
     s.timestamp,
 
     s.container_id,
 
-    dc.commodity,
+    s.commodity,
 
-    cp.category,
+    s.category,
 
     cp.price_per_kg,
 
-    dr.route_key,
+    cp.shelf_life_days,
 
-    dr.source,
+    cp.optimal_temp_min,
 
-    dr.destination,
+    cp.optimal_temp_max,
+
+    cp.risk_level,
+
+    CONCAT(s.source, ' -> ', s.destination) AS route_key,
+
+    s.source,
+
+    s.destination,
 
     s.temperature,
 
@@ -25,16 +34,13 @@ SELECT
 
     s.battery_level,
 
-    s.speed
+    s.speed,
+
+    s.latitude,
+
+    s.longitude
 
 FROM {{ ref('stg_sensor_readings') }} s
 
-LEFT JOIN {{ ref('dim_container') }} dc
-    ON s.container_id = dc.container_id
-
-LEFT JOIN {{ ref('dim_route') }} dr
-    ON dc.source = dr.source
-   AND dc.destination = dr.destination
-
 LEFT JOIN {{ source('raw', 'commodity_pricing') }} cp
-    ON dc.commodity = cp.commodity
+    ON s.commodity = cp.commodity

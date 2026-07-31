@@ -1,5 +1,12 @@
 import os
 import sys
+import json
+
+from kafka import KafkaConsumer
+
+# ---------------------------------------------------------
+# Project Path
+# ---------------------------------------------------------
 
 project_root = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "..")
@@ -7,32 +14,45 @@ project_root = os.path.abspath(
 
 sys.path.insert(0, project_root)
 
+# ---------------------------------------------------------
+# Imports
+# ---------------------------------------------------------
+
 from snowflake_db.connection import get_connection
-import json
-from kafka import KafkaConsumer
 
 TOPIC = "container_sensor"
 BOOTSTRAP_SERVER = "localhost:9092"
 
+# ---------------------------------------------------------
+# Kafka Consumer
+# ---------------------------------------------------------
+
 consumer = KafkaConsumer(
     TOPIC,
     bootstrap_servers=BOOTSTRAP_SERVER,
-    auto_offset_reset="earliest",
+    auto_offset_reset="latest",
     value_deserializer=lambda x: json.loads(x.decode("utf-8"))
 )
 
-print("📥 Kafka Consumer Started...\n")
+print("=" * 55)
+print("      AtmoSync Kafka Consumer Started")
+print("=" * 55)
 
+# ---------------------------------------------------------
 # Snowflake Connection
+# ---------------------------------------------------------
+
 conn = get_connection()
 cursor = conn.cursor()
 
 insert_query = """
 INSERT INTO RAW.SENSOR_READINGS_RAW
 (
+    READING_ID,
     TIMESTAMP,
     CONTAINER_ID,
     COMMODITY,
+    CATEGORY,
     SOURCE,
     DESTINATION,
     TEMPERATURE,
@@ -45,10 +65,15 @@ INSERT INTO RAW.SENSOR_READINGS_RAW
 )
 VALUES
 (
-    %s, %s, %s, %s, %s, %s,
-    %s, %s, %s, %s, %s, %s
+    %s, %s, %s, %s, %s,
+    %s, %s, %s, %s, %s,
+    %s, %s, %s, %s
 )
 """
+
+# ---------------------------------------------------------
+# Consume Messages
+# ---------------------------------------------------------
 
 try:
 
@@ -56,15 +81,17 @@ try:
 
         data = message.value
 
-        print("=" * 60)
         print(json.dumps(data, indent=4))
+        print("=" * 60)
 
         cursor.execute(
             insert_query,
             (
+                data["Reading_ID"],
                 data["Timestamp"],
                 data["Container_id"],
                 data["Commodity"],
+                data["Category"],
                 data["Origin"],
                 data["Destination"],
                 data["Temperature"],
@@ -79,11 +106,13 @@ try:
 
         conn.commit()
 
-        print("✅ Inserted into Snowflake")
+        print(f"✅ Inserted {data['Reading_ID']} into Snowflake")
 
 except KeyboardInterrupt:
-    print("Stopping Consumer...")
+
+    print("\nStopping Consumer...")
 
 finally:
+
     cursor.close()
     conn.close()
