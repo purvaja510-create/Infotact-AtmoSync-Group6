@@ -464,7 +464,7 @@ battery_range = (40, 100)   # %
 
 temperature_missing_probability = 0.05
 humidity_missing_probability = 0.03
-temperature_spike_probability = 0.10
+temperature_spike_probability = 0.01
 
 # ---------------------------------------------------------
 # Simulation Interval
