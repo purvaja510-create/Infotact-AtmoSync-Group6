@@ -34,10 +34,20 @@ def maybe_missing(value, probability):
 # ---------------------------------------------------------
 
 def maybe_temperature_spike(temperature, probability):
-    if random.random() < probability:
-        return round(temperature + random.uniform(3, 8), 2)
-    return temperature
 
+    if random.random() > probability:
+        return temperature
+
+    chance = random.random()
+
+    if chance < 0.70:
+        spike = random.uniform(0.5, 1.5)   # Minor deviation
+    elif chance < 0.95:
+        spike = random.uniform(1.5, 3)     # Moderate deviation
+    else:
+        spike = random.uniform(4, 7)       # Rare critical deviation
+
+    return round(temperature + spike, 2)
 
 # ---------------------------------------------------------
 # Generate Sensor Data
