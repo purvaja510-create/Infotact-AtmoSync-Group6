@@ -124,8 +124,6 @@ def generate_sensor_data():
 
         "Commodity": commodity,
 
-        # "Container_status": random.choice(container_status),
-
         "Category": category,
 
         "Origin": origin,
