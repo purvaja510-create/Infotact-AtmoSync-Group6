@@ -109,16 +109,6 @@ City_coordinates = {
 
 }
 
-# Statues of the conatainers
-# container_status = [
-#     "In Transit",
-#     "Delivered", 
-#     "Delayed", 
-#     "At warehouse", 
-#     "In Customs", 
-#     "Out for Delivery", 
-#     "Awaiting Pickup"
-#     ]
 
 # ---------------------------------------------------------
 # Valid Transportation Routes
