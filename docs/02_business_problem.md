@@ -1,199 +1,206 @@
 
+````markdown
 # Business Problem
 
 ## 1. Background
 
-Cold-chain logistics is used to transport products that must remain within controlled environmental conditions throughout their journey.
+Cold-chain logistics involves the transportation of products that require controlled environmental conditions throughout their journey.
 
 Examples include:
 
 - Fruits and vegetables
-- Dairy products
 - Frozen foods
-- Medicines
+- Pharmaceuticals
 - Vaccines
-- Other temperature-sensitive goods
+- Other temperature-sensitive commodities
 
-These products are often transported in refrigerated trucks or containers.
+During transportation, environmental conditions inside a container can change continuously. Variations in temperature, humidity, vibration, vehicle speed, or other sensor conditions may affect the quality and safety of temperature-sensitive goods.
 
-During transportation, environmental and operational conditions may change. If these changes are not detected and analyzed in time, they can affect product quality and increase the risk of spoilage or financial loss.
+Monitoring these conditions continuously can help identify abnormal readings and provide better visibility into the condition of shipments.
 
 ---
 
 ## 2. Core Business Problem
 
-A shipment may begin its journey under safe conditions but experience problems during transportation.
+Traditional shipment tracking mainly provides information such as:
 
-Possible issues include:
+- Origin
+- Destination
+- Container
+- Shipment movement
+- Delivery status
 
-- Cooling system failure
-- Unexpected temperature increase
-- High or unstable humidity
-- Container door opening
-- Traffic delays
-- Rough-road conditions
-- Excessive vibration
-- Low monitoring-device battery
-- Longer-than-expected journey duration
+However, shipment location alone does not provide sufficient visibility into the environmental conditions experienced by the goods during transportation.
 
-These events may affect the internal environment of the container.
+For example, a shipment may be moving normally between its origin and destination while the temperature inside the container moves outside the recommended range for the transported commodity.
 
-For example, if a cooling system fails, the temperature may gradually rise above the safe range for the commodity being transported.
+This creates a need to monitor sensor data such as:
 
-The business therefore needs better visibility into:
+- Temperature
+- Humidity
+- Vibration
+- Battery level
+- Vehicle speed
+- Latitude
+- Longitude
+- Timestamp
 
-- What is happening inside the container?
-- Which container is experiencing abnormal conditions?
-- When did the problem begin?
-- How long did the unsafe condition continue?
-- Which event may have contributed to the problem?
-- Which shipment may require immediate attention?
+The business problem is therefore to build a system that can continuously collect, process, store, transform, and analyze this sensor information.
 
 ---
 
 ## 3. Example Business Scenario
 
-Consider a refrigerated container carrying apples.
+Consider a refrigerated container transporting a temperature-sensitive commodity.
 
-Assume the safe temperature range is:
-
-```text
-2°C to 6°C
-```
-
-At the beginning of the journey:
-
-```text
-Container ID: C001
-Commodity: Apples
-Temperature: 4.5°C
-Status: Normal
-```
-
-The cooling system later begins to fail.
-
-The temperature changes gradually:
-
-```text
-10:00 AM → 4.5°C
-10:05 AM → 5.1°C
-10:10 AM → 5.8°C
-10:15 AM → 6.4°C
-10:20 AM → 7.2°C
-10:25 AM → 8.1°C
-```
-
-The temperature has now exceeded the safe maximum of 6°C.
-
-This creates important business questions:
-
-- When did the temperature first exceed the safe range?
-- How long did the excursion continue?
-- What was the maximum temperature?
-- Was a cooling failure event recorded?
-- Is the container repeatedly experiencing unsafe conditions?
-- Should the shipment be prioritized for operational attention?
-
-AtmoSync aims to generate and analyze the data required to answer such questions.
-
----
-
-## 4. Limitations of Basic Shipment Tracking
-
-Traditional shipment tracking often focuses on:
-
-- Current location
-- Source
-- Destination
-- Estimated arrival time
-- Delivery status
-
-However, location information alone does not explain the environmental condition inside a refrigerated container.
+The commodity has a defined recommended temperature range.
 
 For example:
 
 ```text
-Shipment Status: On Time
-Location: Near Destination
-```
+Commodity: Temperature-Sensitive Product
+Recommended Temperature Range: 2°C – 6°C
+````
 
-This may appear normal.
-
-But internally:
+During transportation, the simulator may generate readings such as:
 
 ```text
-Temperature: 9.2°C
-Safe Maximum: 6°C
-Cooling Status: Failure
+10:00:00 → 4.5°C
+10:00:05 → 5.1°C
+10:00:10 → 5.8°C
+10:00:15 → 6.4°C
+10:00:20 → 7.2°C
 ```
 
-The shipment may be moving correctly while the product environment is unsafe.
+The later readings indicate that the temperature has moved outside the recommended range.
 
-Therefore, logistics monitoring should consider both:
+A monitoring system should therefore make it possible to identify:
 
-```text
-Shipment Movement Data
-        +
-Environmental Sensor Data
-        +
-Operational Event Data
-```
+* Which container generated the reading?
+* Which commodity was being transported?
+* What was the recorded temperature?
+* What was the recommended temperature range?
+* Was the reading within or outside the expected range?
+* What was the humidity at the same time?
+* What was the container's battery level?
+* What was the vehicle speed and location?
+* What risk level was associated with the shipment?
+
+AtmoSync addresses these requirements by generating and analyzing continuous sensor readings.
 
 ---
 
-## 5. Data Visibility Challenge
+## 4. Environmental Monitoring Challenge
 
-Cold-chain monitoring can generate continuous time-series data.
+Sensor readings can change continuously during transportation.
 
 For example:
 
 ```text
-10:00:00 → Temperature 5.1°C
-10:00:05 → Temperature 5.2°C
-10:00:10 → Temperature 5.4°C
-10:00:15 → Temperature 5.8°C
-10:00:20 → Temperature 6.3°C
+10:00:00 → Temperature: 5.1°C
+10:00:05 → Temperature: 5.2°C
+10:00:10 → Temperature: 5.4°C
+10:00:15 → Temperature: 5.8°C
+10:00:20 → Temperature: 6.3°C
 ```
 
-When multiple containers generate readings continuously, the volume of data increases quickly.
+When multiple containers generate readings at regular intervals, the volume of data can increase rapidly.
 
-The business therefore needs a pipeline capable of:
+A data platform is therefore required to:
 
-- Generating or receiving continuous sensor data
-- Streaming events
-- Storing historical readings
-- Transforming raw data
-- Calculating analytical metrics
-- Visualizing trends and risks
-
----
-
-## 6. Business Need
-
-A useful cold-chain analytics solution should support:
-
-- Continuous monitoring of container conditions
-- Historical sensor analysis
-- Temperature trend analysis
-- Humidity monitoring
-- Vibration monitoring
-- Operational event tracking
-- Temperature excursion detection
-- Time-outside-safe-range analysis
-- Container-level risk indicators
-- Route-level comparisons
-- Commodity-level comparisons
-- Interactive dashboards
-
-The objective is not only to collect data but to transform it into information that supports decisions.
+* Capture continuous sensor readings
+* Stream the readings through a real-time messaging system
+* Store the incoming data
+* Transform raw data into structured models
+* Combine sensor information with reference data
+* Generate analytical metrics
+* Present the results through dashboards
 
 ---
 
-## 7. Proposed AtmoSync Solution
+## 5. Data Quality Challenge
 
-AtmoSync proposes an end-to-end Advanced Data Analytics and Data Engineering pipeline.
+Real-world sensor systems may occasionally produce missing or abnormal readings.
 
-The planned workflow is:
+To make the simulation more representative of real-world IoT data, AtmoSync introduces controlled data-quality variations.
+
+The simulator currently uses:
+
+```text
+Temperature Missing Probability : 5%
+Humidity Missing Probability    : 3%
+Temperature Spike Probability   : 1%
+```
+
+Temperature spikes are simulated by temporarily increasing the generated temperature value.
+
+Missing values are represented as `NULL` in the generated sensor data.
+
+This allows the downstream pipeline to process data that is not always perfectly complete or consistent.
+
+---
+
+## 6. Commodity-Specific Monitoring
+
+Different commodities require different environmental conditions.
+
+AtmoSync therefore generates sensor readings based on commodity-specific configuration.
+
+The simulator uses commodity-level information such as:
+
+* Commodity
+* Category
+* Temperature range
+* Humidity range
+* Vibration range
+* Latitude range
+* Longitude range
+
+This allows the system to generate more realistic sensor readings for different categories of transported goods.
+
+The process can be represented as:
+
+```text
+Commodity
+    ↓
+Commodity Category
+    ↓
+Expected Environmental Conditions
+    ↓
+Simulated Sensor Reading
+```
+
+The resulting data can then be compared and analyzed across commodities and categories.
+
+---
+
+## 7. Business Need
+
+A cold-chain monitoring solution should provide visibility into:
+
+* Current sensor readings
+* Historical sensor readings
+* Temperature trends
+* Temperature alerts
+* Humidity conditions
+* Vibration levels
+* Battery levels
+* Container activity
+* Shipment volume
+* Commodity distribution
+* Shipment category distribution
+* Risk-level distribution
+* Route information
+
+The objective is not simply to collect sensor data but to transform the data into useful information for monitoring and analysis.
+
+---
+
+## 8. Proposed AtmoSync Solution
+
+AtmoSync implements an end-to-end data engineering and analytics pipeline.
+
+The implemented workflow is:
 
 ```text
 Python IoT Simulator
@@ -202,170 +209,169 @@ JSON Sensor Events
         ↓
 Apache Kafka
         ↓
-Snowflake
+Snowflake RAW
         ↓
-dbt + SQL
+dbt Staging
         ↓
-Analytics-Ready Models
+dbt Dimension & Fact Models
+        ↓
+Snowflake MARTS
         ↓
 Apache Superset
         ↓
-Business Insights
+Monitoring & Analytics
 ```
 
-Each component has a specific responsibility.
+Each component performs a specific role in the pipeline.
 
 ### Python IoT Simulator
 
-Python will simulate realistic sensor and journey data because physical IoT sensors are not available for the project.
+The Python simulator generates continuous sensor readings for different commodities and containers.
 
-Planned readings include:
+The generated data includes:
 
-- Temperature
-- Humidity
-- Vibration
-- Battery level
-- Latitude
-- Longitude
-- Vehicle speed
-- Event type
+* Reading ID
+* Container ID
+* Commodity
+* Category
+* Origin
+* Destination
+* Temperature
+* Humidity
+* Vibration
+* Battery level
+* Speed
+* Latitude
+* Longitude
+* Timestamp
+
+The simulator also introduces controlled missing values and temperature spikes to represent potential sensor-data quality issues.
 
 ### Apache Kafka
 
-Kafka will act as the real-time event-streaming layer.
+Apache Kafka provides the real-time streaming layer.
 
-It will support the continuous movement of sensor events from the Python simulator toward downstream processing and storage.
+The Kafka Producer publishes the generated sensor events, while the Kafka Consumer receives the events and inserts them into Snowflake.
+
+This creates a continuous flow of sensor data from the simulator to the data warehouse.
 
 ### Snowflake
 
-Snowflake will act as the cloud data warehouse.
+Snowflake acts as the central cloud data warehouse.
 
-It will store:
+The raw sensor readings are initially stored in:
 
-- Raw sensor events
-- Historical readings
-- Structured shipment data
-- Analytics-related datasets
+```text
+RAW.SENSOR_READINGS_RAW
+```
 
-### dbt and SQL
+The transformed analytical datasets are stored in the MARTS layer.
 
-dbt and SQL will transform raw warehouse data into clean and analytics-ready models.
+The project includes analytical models such as:
 
-Potential transformations include:
+```text
+MARTS.DIM_CONTAINER
+MARTS.DIM_ROUTE
+MARTS.FACT_SENSOR_READINGS
+```
 
-- Temperature deviation
-- Temperature excursion detection
-- Time outside safe range
-- Event counts
-- Container risk indicators
-- Route-level metrics
-- Commodity-level metrics
+### dbt
+
+dbt is used to transform the raw Snowflake data into structured and analytics-ready models.
+
+The transformation flow includes:
+
+```text
+RAW.SENSOR_READINGS_RAW
+            ↓
+STAGING.STG_SENSOR_READINGS
+            ↓
+     ┌──────┼──────────────┐
+     ↓      ↓              ↓
+DIM_CONTAINER  DIM_ROUTE  FACT_SENSOR_READINGS
+```
+
+The dbt models separate raw ingestion from analytical structures and make the resulting data easier to query and analyze.
 
 ### Apache Superset
 
-Apache Superset will provide dashboards and visualizations.
+Apache Superset provides the analytical dashboard layer.
 
-Potential dashboard areas include:
+The AtmoSync dashboard provides visual monitoring of the processed sensor data.
 
-- Operations monitoring
-- Risk and alerts
-- Advanced analytics
-- Executive insights
+The dashboard includes metrics and visualizations such as:
 
----
+* Total sensor readings
+* Active containers
+* Temperature alerts
+* Average battery level
+* Temperature trends by category
+* Temperature alerts by container
+* Shipment distribution by risk level
+* Commodity distribution
+* Shipment category distribution
+* Top commodities by shipment volume
+* Container activity
+* Recent sensor readings
 
-## 8. Operational Events
+Interactive filters allow users to explore the data by dimensions such as:
 
-AtmoSync may simulate business events such as:
-
-- `NORMAL`
-- `DOOR_OPEN`
-- `COOLING_FAILURE`
-- `TRAFFIC_DELAY`
-- `ROUGH_ROAD`
-- `BATTERY_LOW`
-
-These events should influence sensor behavior.
-
-### Example: Cooling Failure
-
-```text
-COOLING_FAILURE
-        ↓
-Temperature begins increasing
-        ↓
-Safe maximum may be exceeded
-        ↓
-Temperature excursion occurs
-        ↓
-Risk indicator increases
-        ↓
-Container may require attention
-```
-
-### Example: Rough Road
-
-```text
-ROUGH_ROAD
-        ↓
-Vibration increases
-        ↓
-Repeated high-vibration readings
-        ↓
-Potential handling concern
-```
-
-### Example: Traffic Delay
-
-```text
-TRAFFIC_DELAY
-        ↓
-Vehicle speed decreases
-        ↓
-Journey duration may increase
-        ↓
-Shipment exposure time increases
-```
+* Risk level
+* Commodity
+* Destination
+* Container
+* Category
 
 ---
 
 ## 9. Key Business Questions
 
-AtmoSync aims to support questions such as:
+The AtmoSync analytics solution is designed to support questions such as:
 
-- Which containers are currently outside safe temperature conditions?
-- Which containers experience repeated temperature excursions?
-- How long does each container remain outside its safe range?
-- Which container recorded the highest temperature deviation?
-- Which routes experience more operational disruptions?
-- Which commodities experience more environmental exceptions?
-- How frequently do cooling failures occur?
-- Which containers show repeated abnormal patterns?
-- Which shipments may require operational attention?
-- How do environmental conditions change over time?
+* How many sensor readings have been recorded?
+* How many containers are represented in the dataset?
+* Which containers have the highest number of temperature alerts?
+* Which commodities are being transported most frequently?
+* How are shipments distributed across risk levels?
+* How do temperature readings vary across commodity categories?
+* What is the average battery level across containers?
+* Which containers show abnormal temperature readings?
+* How are shipments distributed across different categories?
+* Which routes and destinations are represented in the shipment data?
+* What are the most recent sensor readings?
+* Are missing or abnormal sensor readings present in the dataset?
 
 ---
 
 ## 10. Expected Business Value
 
-AtmoSync aims to demonstrate how streaming and historical sensor data can support:
+AtmoSync demonstrates how IoT sensor data can be converted into structured analytical information through a modern data engineering pipeline.
 
-- Better shipment visibility
-- Faster identification of abnormal conditions
-- Historical trend analysis
-- Temperature excursion analysis
-- Container-level monitoring
-- Route-level analysis
-- Commodity-level analysis
-- Better operational prioritization
-- Data-driven decision support
+The solution provides:
+
+* Continuous sensor-data visibility
+* Centralized historical data storage
+* Structured analytical data models
+* Temperature monitoring
+* Environmental-condition analysis
+* Container-level analysis
+* Commodity-level analysis
+* Route-level analysis
+* Risk-level analysis
+* Interactive dashboard-based monitoring
+* A foundation for further cold-chain analytics
+
+The project demonstrates the integration of real-time data streaming, cloud data warehousing, data transformation, and business intelligence.
 
 ---
 
 ## 11. Problem Statement
 
-Cold-chain shipments are exposed to changing environmental and operational conditions during transportation. Basic shipment tracking alone may not provide sufficient visibility into temperature, humidity, vibration, cooling failures, delays, and other events that can affect product conditions.
+Cold-chain transportation involves continuously changing environmental conditions that can affect temperature-sensitive goods. Basic shipment tracking does not provide sufficient visibility into the sensor conditions experienced by individual containers.
 
-AtmoSync aims to address this problem by simulating continuous IoT sensor data, streaming events through a real-time data pipeline, storing historical records in a cloud data warehouse, transforming raw observations into analytics-ready models, and presenting meaningful insights through interactive dashboards.
+AtmoSync addresses this challenge by implementing an end-to-end pipeline that simulates IoT sensor readings, streams the data through Apache Kafka, stores the raw readings in Snowflake, transforms the data using dbt, creates analytical dimension and fact models, and presents the resulting information through an interactive Apache Superset dashboard.
 
-The overall objective is to identify abnormal shipment conditions, analyze environmental and operational patterns, and support better logistics decisions.
+The objective is to provide a centralized analytical view of sensor conditions, container activity, commodity distribution, temperature alerts, shipment risk, and other operational metrics that can support cold-chain monitoring and data-driven analysis.
+
+```
+
