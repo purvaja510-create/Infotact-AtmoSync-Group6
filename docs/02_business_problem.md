@@ -372,6 +372,3 @@ Cold-chain transportation involves continuously changing environmental condition
 AtmoSync addresses this challenge by implementing an end-to-end pipeline that simulates IoT sensor readings, streams the data through Apache Kafka, stores the raw readings in Snowflake, transforms the data using dbt, creates analytical dimension and fact models, and presents the resulting information through an interactive Apache Superset dashboard.
 
 The objective is to provide a centralized analytical view of sensor conditions, container activity, commodity distribution, temperature alerts, shipment risk, and other operational metrics that can support cold-chain monitoring and data-driven analysis.
-
-```
-
