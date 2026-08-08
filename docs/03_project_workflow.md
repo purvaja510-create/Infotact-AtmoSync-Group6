@@ -554,23 +554,3 @@ Analyze
 The integration of Python, Apache Kafka, Snowflake, dbt, SQL, and Apache Superset provides an end-to-end platform for processing and analyzing cold-chain sensor data.
 
 The architecture separates real-time ingestion from data transformation and analytical reporting, allowing raw sensor data to be converted into structured datasets and finally presented through an interactive monitoring dashboard.
-
-````
-
-### For your documentation
-
-Your `docs` folder can now have:
-
-```text
-docs/
-│
-├── 01_project_overview.md
-├── 02_business_problem.md
-├── 03_project_workflow.md      ← paste the above here
-├── 04_system_architecture.md
-├── 05_data_dictionary.md
-├── 06_setup_guide.md
-├── 07_analytics_kpis.md
-├── 08_team_responsibilities.md
-└── 09_testing_plan.md
-````
