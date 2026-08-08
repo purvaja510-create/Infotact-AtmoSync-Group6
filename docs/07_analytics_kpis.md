@@ -12,13 +12,6 @@ The AtmoSync dashboard provides the following key monitoring metrics:
 | Temperature Alerts    | 60     | Readings outside the safe temperature range    |
 | Average Battery       | 70.0%  | Average battery level across active containers |
 
-| KPI                   | Value  | Description                                    |
-|---                    |---:    |---                                             |
-| Total Sensor Readings | 36,913 | Total IoT sensor records available             |
-| Active Containers     | 15     | Containers reporting sensor data               |
-| Temperature Alerts    | 60     | Readings outside the safe temperature range    |
-| Average Battery       | 70.0%  | Average battery level across active containers |
-
 ---
 
 ## 2. Temperature Monitoring
