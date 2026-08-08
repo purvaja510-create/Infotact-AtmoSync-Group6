@@ -1,8 +1,8 @@
+
+````markdown
 # Setup Guide
 
-## 1. Purpose
-
-This document describes the planned development environment and setup process for the AtmoSync project.
+## 1. Project Environment
 
 AtmoSync uses the following technology stack:
 
@@ -11,559 +11,224 @@ Python IoT Simulator
         ↓
 Apache Kafka
         ↓
-Snowflake
+Snowflake RAW
         ↓
-dbt + SQL
+dbt
+        ↓
+Snowflake MARTS
         ↓
 Apache Superset
-```
+````
 
-Git and GitHub are used for version control and team collaboration.
-
-> Note: The project is currently under active development. Setup steps may evolve during implementation and integration.
+Development and version control are managed using VS Code, Git, and GitHub.
 
 ---
 
-## 2. Development Tools
+## 2. Technology Stack
 
-The project may require the following tools:
-
-| Tool | Purpose |
-|---|---|
-| Python | IoT sensor and journey simulation |
-| VS Code | Code development |
-| Git | Local version control |
-| GitHub | Repository collaboration |
-| Apache Kafka | Real-time event streaming |
-| Snowflake | Cloud data warehouse |
-| dbt | Data transformation and analytics modeling |
-| SQL | Querying and business logic |
-| Apache Superset | Dashboard and visualization layer |
+| Tool            | Purpose                                   |
+| --------------- | ----------------------------------------- |
+| Python          | IoT sensor data simulation                |
+| Apache Kafka    | Real-time event streaming                 |
+| Docker          | Kafka and Zookeeper container environment |
+| Snowflake       | Cloud data warehouse                      |
+| dbt             | Data transformation and modeling          |
+| SQL             | Data querying and transformation          |
+| Apache Superset | Dashboard and visualization               |
+| Git & GitHub    | Version control and collaboration         |
+| VS Code         | Development environment                   |
 
 ---
 
-## 3. Team Setup Responsibility
+## 3. Repository Structure
 
-Not every team member needs to configure every technology immediately.
-
-The tentative responsibility structure is:
-
-| Role | Main Tools |
-|---|---|
-| Team Lead / Integration | GitHub, integration, Superset |
-| Python Data Engineer | Python, simulator libraries |
-| Streaming / Warehouse Engineer | Kafka, Snowflake |
-| Analytics Engineer | dbt, SQL, documentation |
-
-Team members may install additional tools when integration testing requires them.
-
----
-
-## 4. Git and GitHub Setup
-
-### Step 1: Install Git
-
-Download and install Git from the official Git website.
-
-Verify installation:
-
-```bash
-git --version
-```
-
-Expected output:
+The project repository is organized into the following major folders:
 
 ```text
-git version x.x.x
+Infotact-AtmoSync-Group6/
+│
+├── atmosync_dbt/
+├── dashboard/
+├── data/
+├── dbt/
+├── docs/
+├── images/
+├── kafka/
+├── presentation/
+├── simulator/
+├── snowflake/
+├── snowflake_db/
+├── superset/
+└── README.md
 ```
 
 ---
 
-### Step 2: Configure Git Identity
+## 4. Python Environment
 
-Set your Git username:
+The project uses a Python virtual environment.
 
-```bash
-git config --global user.name "Your Name"
-```
+### Activate Environment – Windows
 
-Set the email address associated with your GitHub account:
-
-```bash
-git config --global user.email "your-email@example.com"
-```
-
-Verify:
-
-```bash
-git config --global --list
-```
-
----
-
-### Step 3: Clone the Repository
-
-Clone the AtmoSync repository:
-
-```bash
-git clone <repository-url>
-```
-
-Move into the project directory:
-
-```bash
-cd Infotact-AtmoSync-Group6
-```
-
----
-
-### Step 4: Check Available Branches
-
-```bash
-git branch -a
-```
-
----
-
-### Step 5: Work on Your Assigned Branch
-
-Switch to your assigned branch:
-
-```bash
-git checkout <your-branch-name>
-```
-
-Example:
-
-```bash
-git checkout purvaja510-create
-```
-
-Verify:
-
-```bash
-git branch
-```
-
-The active branch will be marked with `*`.
-
----
-
-## 5. Python Environment Setup
-
-### Step 1: Install Python
-
-Install a stable Python 3 version.
-
-Verify:
-
-```bash
-python --version
-```
-
-On some systems:
-
-```bash
-python3 --version
-```
-
----
-
-### Step 2: Create a Virtual Environment
-
-From the project directory:
-
-```bash
-python -m venv .venv
-```
-
----
-
-### Step 3: Activate the Virtual Environment
-
-#### Windows
-
-```bash
+```text
 .venv\Scripts\activate
 ```
 
-#### macOS / Linux
+### Check Python Version
 
-```bash
-source .venv/bin/activate
+```text
+python --version
 ```
 
----
+### Install Dependencies
 
-### Step 4: Upgrade pip
-
-```bash
-python -m pip install --upgrade pip
-```
-
----
-
-### Step 5: Install Project Dependencies
-
-Once the project dependency file is finalized:
-
-```bash
+```text
 pip install -r requirements.txt
 ```
 
-> The final `requirements.txt` should be updated as implementation progresses.
-
 ---
 
-## 6. Planned Python Simulator Setup
+## 5. Kafka Environment
 
-The simulator is expected to generate:
+Kafka and Zookeeper are run using Docker.
 
-- Timestamp
-- Container ID
-- Commodity
-- Temperature
-- Humidity
-- Vibration
-- Battery level
-- Latitude
-- Longitude
-- Speed
-- Event type
-
-A possible simulator structure is:
+The Kafka environment consists of:
 
 ```text
-simulator/
-├── main.py
-├── container.py
-├── sensor.py
-├── journey.py
-├── events.py
-├── generator.py
-├── risk_engine.py
-└── config.py
+Kafka
+Zookeeper
 ```
 
-The exact structure may evolve during development.
-
----
-
-## 7. Apache Kafka Setup
-
-Kafka is planned as the real-time streaming layer.
-
-The intended flow is:
+The data flow is:
 
 ```text
-Python Simulator
-        ↓
+IoT Simulator
+      ↓
 Kafka Producer
-        ↓
-Kafka Topic
-        ↓
+      ↓
+Kafka Broker
+      ↓
 Kafka Consumer
-        ↓
-Downstream Storage
+      ↓
+Snowflake
 ```
 
-### Planned Kafka Components
-
-- Kafka broker
-- Producer
-- Topic
-- Consumer
-
-A possible topic name is:
-
-```text
-sensor-events
-```
-
-### Kafka Validation Goals
-
-During implementation, verify that:
-
-- Producer can connect to Kafka
-- JSON messages are published successfully
-- Topic receives messages
-- Consumer can read messages
-- Message structure is valid
-- Events arrive continuously
-- Downstream ingestion works correctly
-
-> Exact Kafka installation commands depend on the selected local or containerized deployment approach. The team should finalize one common approach before implementation.
+The Producer publishes sensor events to Kafka, while the Consumer receives the events and inserts the sensor data into Snowflake.
 
 ---
 
-## 8. Snowflake Setup
+## 6. Snowflake
 
-Snowflake is planned as the cloud data warehouse.
+Snowflake is used as the central cloud data warehouse.
 
-A possible logical structure is:
+The project uses the following database layers:
 
 ```text
 ATMOSYNC_DB
 │
 ├── RAW
 ├── STAGING
-└── ANALYTICS
+└── MARTS
 ```
 
-### RAW Layer
+### RAW
 
-Stores incoming source-level data.
-
-Example:
+Stores incoming sensor readings.
 
 ```text
-RAW.SENSOR_EVENTS
+RAW.SENSOR_READINGS_RAW
 ```
 
-### STAGING Layer
+### STAGING
 
-Contains cleaned and standardized data.
-
-Example:
+Contains the cleaned staging model.
 
 ```text
-STAGING.STG_SENSOR_EVENTS
+STAGING.STG_SENSOR_READINGS
 ```
 
-### ANALYTICS Layer
+### MARTS
 
-Contains business-ready models.
-
-Examples:
+Contains analytics-ready models.
 
 ```text
-ANALYTICS.CONTAINER_RISK
-ANALYTICS.TEMPERATURE_EXCURSIONS
-ANALYTICS.ROUTE_PERFORMANCE
+MARTS.DIM_CONTAINER
+MARTS.DIM_ROUTE
+MARTS.FACT_SENSOR_READINGS
 ```
 
-### Snowflake Setup Tasks
-
-The Snowflake owner may need to:
-
-- Create or configure the project account
-- Create database
-- Create schemas
-- Create tables
-- Configure roles and permissions
-- Test SQL queries
-- Validate incoming records
-- Prepare connectivity for dbt
-- Prepare connectivity for Superset
-
-> Final database, schema, warehouse, and role names should be agreed by the team before implementation.
+Commodity pricing data is also used during the transformation process.
 
 ---
 
-## 9. dbt Setup
+## 7. dbt
 
-dbt is planned as the transformation and analytics-modeling layer.
+dbt is used to transform the Snowflake RAW data into analytics-ready models.
 
-For a local dbt Core approach, the analytics engineer may create a Python environment and install the Snowflake adapter.
-
-Example:
-
-```bash
-pip install dbt-core dbt-snowflake
-```
-
-Verify:
-
-```bash
-dbt --version
-```
-
-### Planned dbt Flow
+The dbt transformation flow is:
 
 ```text
-Snowflake Raw Data
-        ↓
-dbt Staging Models
-        ↓
-Intermediate Models
-        ↓
-Analytics / Mart Models
-        ↓
-Superset
+RAW.SENSOR_READINGS_RAW
+          ↓
+STAGING.STG_SENSOR_READINGS
+          ↓
+     ┌────┼────┐
+     ↓    ↓    ↓
+DIM_CONTAINER
+DIM_ROUTE
+FACT_SENSOR_READINGS
 ```
 
-### Possible dbt Project Structure
+The dbt project is located in:
 
 ```text
-dbt/
-├── models/
-│   ├── staging/
-│   ├── intermediate/
-│   └── marts/
-├── seeds/
-├── tests/
-└── dbt_project.yml
+atmosync_dbt/
 ```
 
-### Potential dbt Models
+Run the dbt transformations from the `atmosync_dbt` directory:
 
 ```text
-stg_sensor_events
-int_temperature_excursions
-int_container_events
-mart_container_risk
-mart_route_performance
-mart_commodity_analysis
-```
-
-### Planned dbt Commands
-
-Check configuration:
-
-```bash
-dbt debug
-```
-
-Run models:
-
-```bash
 dbt run
 ```
 
-Run tests:
-
-```bash
-dbt test
-```
-
-Build models and tests:
-
-```bash
-dbt build
-```
-
-> Credentials must not be committed to GitHub. Connection configuration should use secure local profiles or environment variables.
+The completed dbt pipeline creates the required staging, dimension, and fact models in Snowflake.
 
 ---
 
-## 10. Apache Superset Setup
+## 8. Apache Superset
 
-Apache Superset is planned as the dashboard and visualization layer.
+Apache Superset is used as the visualization layer.
 
-The intended flow is:
+The dashboard connects to the analytics-ready data in Snowflake MARTS.
 
-```text
-Snowflake Analytics Models
-        ↓
-Apache Superset
-        ↓
-Charts
-        ↓
-Dashboards
-        ↓
-Business Insights
-```
+The dashboard provides monitoring and analytical views including:
 
-Potential dashboards include:
-
-- Operations Dashboard
-- Risk and Alert Dashboard
-- Advanced Analytics Dashboard
-- Executive Dashboard
-
-### Superset Setup Goals
-
-- Configure Superset environment
-- Connect to analytics-ready data
-- Validate datasets
-- Create charts
-- Add filters
-- Build dashboards
-- Test dashboard behavior
-
-> The final installation and deployment approach should be agreed by the team before implementation.
+* Total Sensor Readings
+* Active Containers
+* Temperature Alerts
+* Average Battery
+* Temperature Trends
+* Shipment Risk Distribution
+* Commodity Distribution
+* Container Activity
+* Recent Sensor Readings
 
 ---
 
-## 11. Environment Variables and Secrets
+## 9. Git and GitHub
 
-Sensitive credentials must not be stored directly in source code.
+Git and GitHub are used for version control and team collaboration.
 
-Examples include:
-
-- Snowflake username
-- Snowflake password
-- Account identifier
-- Database credentials
-- API keys
-- Other secrets
-
-A local environment file may be used:
+The project repository is:
 
 ```text
-.env
+Infotact-AtmoSync-Group6
 ```
 
-Example variable names:
+The general development workflow is:
 
 ```text
-SNOWFLAKE_ACCOUNT=
-SNOWFLAKE_USER=
-SNOWFLAKE_PASSWORD=
-SNOWFLAKE_DATABASE=
-SNOWFLAKE_SCHEMA=
-SNOWFLAKE_WAREHOUSE=
-```
-
-The `.env` file should be excluded from Git tracking.
-
-Example `.gitignore` entries:
-
-```text
-.env
-.venv/
-__pycache__/
-*.pyc
-```
-
----
-
-## 12. Recommended Local Project Structure
-
-```text
-Infotact-AtmoSync-Group6/
-│
-├── simulator/
-├── kafka/
-│   ├── producer/
-│   └── consumer/
-├── snowflake/
-│   ├── schema/
-│   └── sql/
-├── dbt/
-│   ├── models/
-│   └── seeds/
-├── dashboard/
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── sample/
-├── docs/
-├── presentation/
-├── images/
-├── .gitignore
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 13. GitHub Collaboration Workflow
-
-Each member should work on their assigned branch.
-
-```text
-Assigned Branch
+Create / Update Branch
         ↓
 Make Changes
         ↓
@@ -573,108 +238,39 @@ Commit
         ↓
 Push
         ↓
-Create Pull Request
+Pull Request
         ↓
 Review
         ↓
-Merge into main
+Merge
 ```
 
-Avoid direct changes to `main`.
+Team members work through separate branches and merge completed changes into the main project branch.
 
 ---
 
-## 14. Recommended Commit Messages
+## 10. Project Pipeline
 
-Examples:
-
-```text
-docs: add project setup guide
-```
+The complete implemented pipeline is:
 
 ```text
-feat: add initial IoT sensor simulator
+IoT Simulator
+      ↓
+Kafka Producer
+      ↓
+Kafka Broker
+      ↓
+Kafka Consumer
+      ↓
+Snowflake RAW
+      ↓
+dbt Staging Model
+      ↓
+dbt Dimension & Fact Models
+      ↓
+Snowflake MARTS
+      ↓
+Apache Superset
 ```
 
-```text
-feat: add Kafka producer
-```
-
-```text
-feat: add Snowflake raw sensor schema
-```
-
-```text
-feat: add dbt staging model
-```
-
-```text
-fix: correct temperature excursion logic
-```
-
----
-
-## 15. Setup Validation Checklist
-
-### GitHub
-
-- [x] Repository cloned successfully
-- [x] Correct branch selected
-- [x] Git identity configured
-- [x] Push access tested
-
-### Python
-
-- [ ] Python installed
-- [ ] Virtual environment created
-- [ ] Dependencies installed
-- [ ] Simulator can run
-
-### Kafka
-
-- [ ] Kafka environment configured
-- [ ] Producer connection tested
-- [ ] Topic available
-- [ ] Consumer receives messages
-
-### Snowflake
-
-- [ ] Account access available
-- [ ] Database created
-- [ ] Schemas created
-- [ ] Raw table created
-- [ ] SQL queries tested
-
-### dbt
-
-- [ ] dbt environment configured
-- [ ] Snowflake connection tested
-- [ ] `dbt debug` succeeds
-- [ ] Models run successfully
-- [ ] Tests run successfully
-
-### Superset
-
-- [ ] Superset environment configured
-- [ ] Data source connection tested
-- [ ] Dataset available
-- [ ] Initial chart created
-
----
-
-## 16. Current Status
-
-This setup guide represents the planned development environment for AtmoSync.
-
-As implementation progresses, the team should update this document with:
-
-- Final installation method
-- Confirmed software versions
-- Exact configuration steps
-- Final Kafka approach
-- Final Snowflake objects
-- Final dbt project structure
-- Final Superset connection process
-- Known issues and troubleshooting steps
-
-The document should evolve with the actual implementation of the project.
+This setup enables AtmoSync to move sensor data from simulation through real-time streaming, cloud storage, transformation, analytical modeling, and dashboard visualization.
