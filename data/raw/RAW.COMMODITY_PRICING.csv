@@ -1,0 +1,37 @@
+﻿COMMODITY,PRICE_PER_KG,CATEGORY,SHELF_LIFE_DAYS,OPTIMAL_TEMP_MIN,OPTIMAL_TEMP_MAX,RISK_LEVEL
+Apple,180,Fruits,45,0,4,Medium
+Banana,45,Fruits,12,13,15,Medium
+Mango,220,Fruits,14,10,13,Medium
+Orange,80,Fruits,30,3,8,Low
+Grapes,120,Fruits,21,0,2,Medium
+Pineapple,90,Fruits,20,7,10,Low
+Strawberries,350,Fruits,7,0,2,High
+Papaya,70,Fruits,10,10,13,Low
+Tomato,35,Vegetables,14,8,12,Low
+Potato,30,Vegetables,90,4,8,Low
+Onion,40,Vegetables,120,0,4,Low
+Carrot,50,Vegetables,60,0,4,Low
+Cabbage,30,Vegetables,60,0,2,Low
+Cauliflower,55,Vegetables,20,0,2,Medium
+Capsicum,80,Vegetables,21,7,10,Medium
+Green Peas,120,Vegetables,14,0,2,Medium
+Avocados,280,Exotic Fruits & Vegetables,21,4,8,High
+Kiwi,320,Exotic Fruits & Vegetables,45,0,1,High
+Dragon Fruit,250,Exotic Fruits & Vegetables,20,5,10,Medium
+Broccoli,180,Exotic Fruits & Vegetables,14,0,4,High
+Asparagus,450,Exotic Fruits & Vegetables,10,2,4,High
+Lettuce,90,Exotic Fruits & Vegetables,7,0,2,High
+Frozen Fish,450,Frozen Foods,180,-20,-18,Critical
+Frozen Prawns,650,Frozen Foods,180,-20,-18,Critical
+Frozen Chicken,320,Frozen Foods,365,-20,-18,High
+Frozen Meat,700,Frozen Foods,365,-20,-18,Critical
+Frozen Peas,180,Frozen Foods,365,-20,-18,Medium
+Frozen Corn,160,Frozen Foods,365,-20,-18,Medium
+Ice Cream,250,Frozen Foods,180,-25,-18,High
+Frozen French Fries,220,Frozen Foods,365,-20,-18,Medium
+Vaccines,5000,Pharmaceuticals,365,2,8,Critical
+Medicines,1200,Pharmaceuticals,730,15,25,High
+Insulin,3500,Pharmaceuticals,365,2,8,Critical
+Blood Plasma,8000,Pharmaceuticals,365,-30,-20,Critical
+Antibiotics,1500,Pharmaceuticals,365,2,8,High
+Biologics,6000,Pharmaceuticals,365,2,8,Critical
